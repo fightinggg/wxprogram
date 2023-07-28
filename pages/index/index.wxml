@@ -5,6 +5,9 @@
     <view class="btn-col">
         <button size="mini" type="warn" bind:tap="_clear">清空</button>
       </view>
+      <view class="btn-col">
+        <button size="mini" type="warn" bind:tap="_rollback">撤回</button>
+      </view>
   </view>
 
   <view class="page" style="height: {{height}}px;">

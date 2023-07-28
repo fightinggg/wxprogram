@@ -16,6 +16,8 @@ Component({
 
     canvasPosX: 0,
     canvasPosY: 0,
+
+    imgs: []
   },
 
   lifetimes: {
@@ -58,23 +60,28 @@ Component({
         });
     },
 
+
     
 
-    // 开始签名
     _start(e) {
-      console.log('hi')
       this.setData({
         canvasPosX: e.changedTouches[0].x,
         canvasPosY: e.changedTouches[0].y,
       });
       this.data.canvasContext.lineWidth = 2;
+      console.log(`move To ${this.data.canvasPosX} ${this.data.canvasPosY}`)
+
+      this.data.imgs.push({
+        type: 'moveTo',
+        x:this.data.canvasPosX,
+        y:this.data.canvasPosY
+      })
       this.data.canvasContext.moveTo(
         this.data.canvasPosX,
         this.data.canvasPosY
       );
     },
 
-    // 开始移动
     _move(e) {
       const { canvasContext, canvasPosX, canvasPosY } = this.data;
 
@@ -82,6 +89,13 @@ Component({
         canvasPosX: e.changedTouches[0].x,
         canvasPosY: e.changedTouches[0].y,
       });
+      console.log(`lineTo To ${canvasPosX} ${canvasPosY}`)
+      this.data.imgs.push({
+        type: 'lineTo',
+        x:canvasPosX,
+        y:canvasPosY
+      })
+      console.log(this.data.imgs)
       canvasContext.lineTo(canvasPosX, canvasPosY);
       canvasContext.stroke();
     },
@@ -93,7 +107,30 @@ Component({
       canvasContext.clearRect(0, 0, width, height);
 
       canvasContext.beginPath();
+      this.data.imgs = []
     },
+
+    _rollback(){
+      const imgs = this.data.imgs
+      if(imgs.length==0){
+        return
+      }
+      const lastOp = []
+      while(true){
+        if(imgs.length==0){
+          console.log("BUG!!!!!")
+          this._clear()
+        }
+
+        const last = imgs.pop()
+        lastOp.push(last)
+        if(last.type=='moveTo'){
+          console.log(lastOp)
+          console.log(imgs)
+          break
+        }
+      }
+    }
 
   },
 });
