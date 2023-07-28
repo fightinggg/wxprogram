@@ -1,0 +1,21 @@
+<!--components/sigin-input/sigin-input.wxml-->
+<page-container show="{{show}}" custom-style="height: 100%;" bind:afterleave="_leave">
+
+  <view class="btns">
+    <view class="btn-col">
+        <button size="mini" type="warn" bind:tap="_clear">清空</button>
+      </view>
+  </view>
+
+  <view class="page" style="height: {{height}}px;">
+    <canvas
+      class="canvas"
+      type="2d"
+      id="{{id}}"
+      style="width: {{width}}px;height: {{height}}px;"
+      bindtouchstart="_start"
+      bindtouchmove="_move"
+    ></canvas>
+  </view>
+
+</page-container>
